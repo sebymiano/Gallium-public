@@ -321,7 +321,7 @@ namespace Morula {
             std::string func_name;
             if (fn == nullptr) {
                 // indirect function call
-                const llvm::Value* v = call.getCalledValue();
+                const llvm::Value* v = call.getCalledOperand();
                 const llvm::Value* sv = v->stripPointerCasts();
                 llvm::StringRef fname = sv->getName();
                 //llvm::errs() << "indirect call? " << fname << "\n";
@@ -330,7 +330,7 @@ namespace Morula {
                 func_name = fn->getName().str();
             }
             if (call.isInlineAsm()) {
-                auto v = call.getCalledValue();
+                auto v = call.getCalledOperand();
                 auto asm_inst = llvm::dyn_cast<llvm::InlineAsm>(v);
                 assert(asm_inst != nullptr);
                 auto asm_str = asm_inst->getAsmString();
@@ -471,7 +471,7 @@ namespace Morula {
                     auto llvm_f = call->getCalledFunction();
                     if (llvm_f == nullptr) {
                         // indirect function call
-                        const llvm::Value* v = call->getCalledValue();
+                        const llvm::Value* v = call->getCalledOperand();
                         const llvm::Value* sv = v->stripPointerCasts();
                         if (auto c = llvm::dyn_cast<llvm::Function>(sv)) {
                             llvm_f = const_cast<llvm::Function *>(c);

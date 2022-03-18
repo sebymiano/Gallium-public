@@ -252,7 +252,7 @@ public:
         llvm::Function* fp = inst.getCalledFunction();
         std::string func_name;
         if (fp==NULL) {
-            const llvm::Value* v = inst.getCalledValue();
+            const llvm::Value* v = inst.getCalledOperand();
             const llvm::Value* sv = v->stripPointerCasts();
             llvm::StringRef fname = sv->getName();
             //llvm::errs() << "indirect call? " << fname << "\n";
@@ -264,7 +264,7 @@ public:
         // TODO: filter out llvm internal functions
         if (inst.isInlineAsm()) {
             llvm::errs() << "got inline asm\n";
-            auto asm_val = inst.getCalledValue();
+            auto asm_val = inst.getCalledOperand();
             if (const llvm::InlineAsm* asm_inst = llvm::dyn_cast<llvm::InlineAsm>(asm_val)) {
                 auto asm_str = asm_inst->getAsmString();
                 llvm::errs() << "got asm pointer\n";
